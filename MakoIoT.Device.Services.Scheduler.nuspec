@@ -17,11 +17,11 @@
     <description>Task scheduler for MAKO-IoT. Executes given logic at defined intervals.</description>
     <tags>nanoFramework C# csharp netmf netnf mako-iot scheduler</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="1.12.0" />
-      <dependency id="nanoFramework.Logging" version="1.1.47" />
-      <dependency id="nanoFramework.System.Collections" version="1.4.0" />
-      <dependency id="MakoIoT.Device.Services.DependencyInjection" version="1.0.15.33629" />
-      <dependency id="MakoIoT.Device.Services.Interface" version="1.0.15.14787" />
+      <dependency id="nanoFramework.CoreLibrary" version="1.14.2" />
+      <dependency id="nanoFramework.Logging" version="1.1.63" />
+      <dependency id="nanoFramework.System.Collections" version="1.5.18" />
+      <dependency id="MakoIoT.Device.Services.DependencyInjection" version="1.0.16.34356" />
+      <dependency id="MakoIoT.Device.Services.Interface" version="1.0.16.37362" />
     </dependencies>
   </metadata>
   <files>
