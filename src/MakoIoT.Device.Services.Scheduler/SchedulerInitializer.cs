@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using MakoIoT.Device.Services.DependencyInjection;
 using MakoIoT.Device.Services.Interface;
 using MakoIoT.Device.Services.Scheduler.Configuration;
 using Microsoft.Extensions.Logging;
+using nanoFramework.DependencyInjection;
 
 namespace MakoIoT.Device.Services.Scheduler
 {
@@ -12,15 +12,15 @@ namespace MakoIoT.Device.Services.Scheduler
         private readonly IScheduler _scheduler;
         private readonly IConfigurationService _config;
         private readonly ILogger _logger;
-
+        private readonly IServiceProvider serviceProvider;
         private readonly Hashtable _tasks = new();
 
-        public SchedulerInitializer(IScheduler scheduler, IConfigurationService config, ILogger logger, SchedulerOptions options)
+        public SchedulerInitializer(IScheduler scheduler, IConfigurationService config, ILogger logger, SchedulerOptions options, IServiceProvider serviceProvider)
         {
             _scheduler = scheduler;
             _config = config;
             _logger = logger;
-
+            this.serviceProvider = serviceProvider;
             RegisterTasks(options);
         }
 
@@ -29,7 +29,7 @@ namespace MakoIoT.Device.Services.Scheduler
             foreach (var p in options.Tasks.Keys)
             {
                 _logger.LogDebug($"Adding task {p}");
-                var task = (ITask)DI.BuildUp((Type)options.Tasks[p]);
+                var task = (ITask)ActivatorUtilities.CreateInstance(serviceProvider, (Type)options.Tasks[p]);
                 _tasks.Add(p, task);
             }
         }
