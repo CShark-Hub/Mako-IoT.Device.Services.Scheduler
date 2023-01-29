@@ -1,5 +1,5 @@
-﻿using MakoIoT.Device.Services.DependencyInjection;
-using MakoIoT.Device.Services.Interface;
+﻿using MakoIoT.Device.Services.Interface;
+using nanoFramework.DependencyInjection;
 
 namespace MakoIoT.Device.Services.Scheduler.Extensions
 {
@@ -9,20 +9,20 @@ namespace MakoIoT.Device.Services.Scheduler.Extensions
     {
         public static IDeviceBuilder AddScheduler(this IDeviceBuilder builder, SchedulerConfigurator configurator)
         {
-            DI.RegisterSingleton(typeof(IScheduler), typeof(Scheduler));
+            builder.Services.AddSingleton(typeof(IScheduler), typeof(Scheduler));
 
             var options = new SchedulerOptions();
             configurator(options);
-            DI.RegisterInstance(typeof(SchedulerOptions), options);
+            builder.Services.AddSingleton(typeof(SchedulerOptions), options);
 
             builder.DeviceStarting += Builder_DeviceStarting;
 
             return builder;
         }
 
-        private static void Builder_DeviceStarting(object sender, System.EventArgs e)
+        private static void Builder_DeviceStarting(IDevice sender)
         {
-            var initializer = (SchedulerInitializer)DI.BuildUp(typeof(SchedulerInitializer));
+            var initializer = (SchedulerInitializer)ActivatorUtilities.CreateInstance(sender.ServiceProvider, typeof(SchedulerInitializer));
             initializer.InitializeTasks();
         }
     }
