@@ -1,4 +1,5 @@
-# Project readme
+#  Mako-IoT.Device.Services.Scheduler
+Scheduler launches configured jobs at specific intervals.
 
 ## How to manually sync fork
 - Clone repository and navigate into folder
