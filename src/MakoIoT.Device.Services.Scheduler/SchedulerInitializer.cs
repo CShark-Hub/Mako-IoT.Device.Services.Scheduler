@@ -20,8 +20,12 @@ namespace MakoIoT.Device.Services.Scheduler
             _scheduler = scheduler;
             _config = config;
             _logger = logger;
-            this._serviceProvider = serviceProvider;
-            RegisterTasks(options);
+            _serviceProvider = serviceProvider;
+
+            if (options != null && options.Tasks != null)
+            {
+                RegisterTasks(options);
+            }
         }
 
         private void RegisterTasks(SchedulerOptions options)
@@ -38,25 +42,28 @@ namespace MakoIoT.Device.Services.Scheduler
         {
             var config = (SchedulerConfig)_config.GetConfigSection(SchedulerConfig.SectionName, typeof(SchedulerConfig));
 
-            foreach (var taskConfig in config.Tasks)
+            if (config != null && config.Tasks != null)
             {
-                try
+                foreach (var taskConfig in config.Tasks)
                 {
-                    _logger.LogDebug(
-                        $"TaskId found in config: {taskConfig.TaskId}, {taskConfig.IntervalMs}");
-                    if (_tasks.Contains(taskConfig.TaskId))
+                    try
                     {
-                        var task = (ITask)_tasks[taskConfig.TaskId];
-                        _scheduler.Start(() => task.Execute(), taskConfig.IntervalMs, task.Id);
+                        _logger.LogDebug(
+                            $"TaskId found in config: {taskConfig.TaskId}, {taskConfig.IntervalMs}");
+                        if (_tasks.Contains(taskConfig.TaskId))
+                        {
+                            var task = (ITask)_tasks[taskConfig.TaskId];
+                            _scheduler.Start(() => task.Execute(), taskConfig.IntervalMs, task.Id);
+                        }
+                        else
+                        {
+                            _logger.LogWarning($"Task implementation {taskConfig.TaskId} not found");
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        _logger.LogWarning($"Task implementation {taskConfig.TaskId} not found");
+                        _logger.LogError(e, $"Error initializing task {taskConfig?.TaskId}");
                     }
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e, $"Error initializing task {taskConfig?.TaskId}");
                 }
             }
         }
