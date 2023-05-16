@@ -12,7 +12,7 @@ namespace MakoIoT.Device.Services.Scheduler
         private readonly IScheduler _scheduler;
         private readonly IConfigurationService _config;
         private readonly ILogger _logger;
-        private readonly IServiceProvider serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
         private readonly Hashtable _tasks = new();
 
         public SchedulerInitializer(IScheduler scheduler, IConfigurationService config, ILogger logger, SchedulerOptions options, IServiceProvider serviceProvider)
@@ -20,7 +20,7 @@ namespace MakoIoT.Device.Services.Scheduler
             _scheduler = scheduler;
             _config = config;
             _logger = logger;
-            this.serviceProvider = serviceProvider;
+            this._serviceProvider = serviceProvider;
             RegisterTasks(options);
         }
 
@@ -29,7 +29,7 @@ namespace MakoIoT.Device.Services.Scheduler
             foreach (var p in options.Tasks.Keys)
             {
                 _logger.LogDebug($"Adding task {p}");
-                var task = (ITask)ActivatorUtilities.CreateInstance(serviceProvider, (Type)options.Tasks[p]);
+                var task = (ITask)ActivatorUtilities.CreateInstance(_serviceProvider, (Type)options.Tasks[p]);
                 _tasks.Add(p, task);
             }
         }
