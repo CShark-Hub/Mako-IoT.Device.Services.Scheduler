@@ -3,7 +3,7 @@ using System.Collections;
 using MakoIoT.Device.Services.Interface;
 using MakoIoT.Device.Services.Scheduler.Configuration;
 using Microsoft.Extensions.Logging;
-using nanoFramework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MakoIoT.Device.Services.Scheduler
 {
