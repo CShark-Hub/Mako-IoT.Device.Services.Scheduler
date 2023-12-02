@@ -2,16 +2,15 @@
 using System.Collections;
 using System.Threading;
 using MakoIoT.Device.Services.Interface;
-using Microsoft.Extensions.Logging;
 
 namespace MakoIoT.Device.Services.Scheduler
 {
     public class Scheduler : IScheduler
     {
         private readonly Hashtable _timers = new Hashtable();
-        private readonly ILogger _logger;
+        private readonly ILog _logger;
 
-        public Scheduler(ILogger logger)
+        public Scheduler(ILog logger)
         {
             _logger = logger;
         }
@@ -42,17 +41,17 @@ namespace MakoIoT.Device.Services.Scheduler
 
         private void TimerElapsed(object state)
         {
-            string id = String.Empty;
+            var id = string.Empty;
             try
             {
                 var s = (State)state;
                 id = s.Id;
-                _logger.LogDebug($"Invoke on {id}");
+                _logger.Trace($"Invoke on {id}");
                 s.Action?.Invoke();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Exception from {id}");
+                _logger.Error($"Exception from {id}", e);
             }
         }
 
