@@ -17,7 +17,7 @@
     <description>Task scheduler for MAKO-IoT. Executes given logic at defined intervals.</description>
     <tags>nanoFramework C# csharp netmf netnf mako-iot scheduler</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="1.16.11" />
+      <dependency id="nanoFramework.CoreLibrary" version="1.17.1" />
       <dependency id="nanoFramework.System.Collections" version="1.5.59" />
       <dependency id="nanoFramework.DependencyInjection" version="1.1.25" />
       <dependency id="MakoIoT.Device.Services.Interface" version="1.0.50.35966" />
